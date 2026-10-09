@@ -1,0 +1,94 @@
+dns:
+  cache-algorithm: arc
+  enable: true
+  prefer-h3: true
+  listen: '0.0.0.0:53'
+  ipv6: true
+
+  # 已修正：基础解析 DNS 仅使用纯 IP 及 system
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 1.12.12.12
+    - system
+
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - 'rule-set:FakeIpFilter'
+  fake-ip-filter-mode: blacklist
+  fake-ip-ttl: 1
+  use-hosts: true
+  use-system-hosts: true
+  respect-rules: false
+
+  nameserver:
+    - 'https://doh.pub/dns-query'
+    - 'https://dns.alidns.com/dns-query'
+    - 119.29.29.29
+    - 223.5.5.5
+    - system
+
+  fallback:
+    - 'https://dns.google/dns-query#🌐 国外流量'
+    - 'https://cloudflare-dns.com/dns-query#🌐 国外流量'
+    - '8.8.8.8#🌐 国外流量'
+    - '1.1.1.1#🌐 国外流量'
+
+  # 已修正：节点解析 DNS 使用纯 IP / 直连 IP DoH 避免死循环
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 'https://1.12.12.12/dns-query'
+    - 'https://223.5.5.5/dns-query'
+
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 0.0.0.0/8
+      - 10.0.0.0/8
+      - 100.64.0.0/10
+      - 127.0.0.0/8
+      - 169.254.0.0/16
+      - 172.16.0.0/12
+      - 192.0.0.0/24
+      - 192.0.2.0/24
+      - 192.88.99.0/24
+      - 192.168.0.0/16
+      - 198.18.0.0/15
+      - 198.51.100.0/24
+      - 203.0.113.0/24
+      - 224.0.0.0/4
+      - 233.252.0.0/24
+      - 240.0.0.0/4
+      - 255.255.255.255/32
+    domain:
+      - '+.google.com'
+      - '+.facebook.com'
+      - '+.youtube.com'
+      - '+.githubusercontent.com'
+      - '+.googlevideo.com'
+
+  nameserver-policy:
+    'rule-set:Direct,GameDownloadCN,SteamCN,ChinaMedia,China':
+      - 'https://doh.pub/dns-query'
+      - 'https://dns.alidns.com/dns-query'
+      - 119.29.29.29
+      - 223.5.5.5
+      - system
+    'rule-set:Lan':
+      - system
+    'geosite:cn':
+      - 'https://doh.pub/dns-query'
+      - 'https://dns.alidns.com/dns-query'
+      - 119.29.29.29
+      - 223.5.5.5
+      - system
+    'geosite:private':
+      - system
+    'geosite:gfw':
+      - 'https://dns.google/dns-query#🌐 国外流量'
+      - 'https://cloudflare-dns.com/dns-query#🌐 国外流量'
+      - '8.8.8.8#🌐 国外流量'
+      - '1.1.1.1#🌐 国外流量'
